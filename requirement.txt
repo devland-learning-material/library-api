@@ -1,0 +1,61 @@
+library-api
+ 
+1. Get all books:
+Endpoint: GET /books
+Description: Retrieve a list of all books in the library.
+Response: A JSON array containing information about each book.
+ 
+2. Get a specific book:
+Endpoint: GET /books/{id}
+Description: Retrieve detailed information about a specific book identified by its unique id.
+Response: A JSON object representing the book.
+ 
+3. Add a new book:
+Endpoint: POST /books
+Description: Add a new book to the library.
+Request: Provide a JSON object with details of the new book (title, author, publication_date, ISBN, genre, etc.).
+Response: Return the newly created book with its unique id.
+ 
+4.Update a book:
+Endpoint: PUT /books/{id}
+Description: Update the details of a specific book identified by its unique id.
+Request: Provide a JSON object with the updated details of the book.
+Response: Return the updated book information.
+ 
+5.Delete a book:
+Endpoint: DELETE /books/{id}
+Description: Remove a specific book from the library based on its unique id.
+Response: Return a success message indicating that the book has been deleted.
+ 
+as well as Author
+ 
+ 
+Book
+    Long id
+    
+    String title            [REQUIRED]
+    
+    String description      [REQUIRED]
+ 
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    Author Author           [REQUIRED]
+ 
+ 
+Author
+    Long id
+    
+    String firstName        [REQUIRED]
+    
+    String lastName         [REQUIRED]
+ 
+    @OneToMany
+    List<Book> books
+ 
+ 
+DEPENDENCIES
+ 
+SPRING JPA
+LOMBOK
+POSTGRESQL/H2 -> H2 data.sql
+SPRING VALIDATION
+has context menu
