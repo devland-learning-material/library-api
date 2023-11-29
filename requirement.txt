@@ -59,3 +59,8 @@ LOMBOK
 POSTGRESQL/H2 -> H2 data.sql
 SPRING VALIDATION
 has context menu
+
+
+get all 
+bisa pagination . 1 page min 5 item
+sort by title , sort by author name . asc dsc

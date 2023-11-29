@@ -1,7 +1,10 @@
 package excercise.library.library.book;
 
 import java.util.List;
+import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import excercise.library.library.author.AuthorService;
@@ -15,8 +18,12 @@ public class BookService {
   private final BookRepository bookRepository;
   private final AuthorService authorService;
 
-  public List<Book> getAll() {
-    return this.bookRepository.findAll();
+  public Page<Book> getAll(Optional<String> optionalQ, Pageable pageable) {
+    if (!optionalQ.isPresent()) {
+      return this.bookRepository.findAll(pageable);
+    }
+
+    return this.bookRepository.findAllByTitleIgnoreCaseContaining(optionalQ.get(), pageable);
   }
 
   public Book getOneById(Long id) {

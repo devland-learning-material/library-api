@@ -1,7 +1,10 @@
 package excercise.library.library.author;
 
 import java.util.List;
+import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import excercise.library.library.author.model.Author;
@@ -12,8 +15,16 @@ import lombok.RequiredArgsConstructor;
 public class AuthorService {
   private final AuthorRepository authorRepository;
 
-  public List<Author> getAll() {
-    return this.authorRepository.findAll();
+  public Page<Author> getAll(
+    Optional<String> optionalQ,
+    Pageable pageable
+  ) {
+    if(!optionalQ.isPresent()){
+      return this.authorRepository.findAll(pageable);
+    }
+
+    return this.authorRepository.findAllByFirstNameIgnoreCaseContainingOrLastNameIgnoreCaseContaining(optionalQ.get(), optionalQ.get(), pageable);
+    
   }
 
   public Author getOneById(Long id) {
