@@ -37,7 +37,7 @@ public class Author {
   public AuthorResponseDTO convertToResponse() {
     List<BookResponseDTO> bookResponseDTOs = new ArrayList<>();
     if (this.books != null) {
-      bookResponseDTOs = this.books.stream().map(Book::convertToResponseAuthor).toList();
+      bookResponseDTOs = this.books.stream().map(Book::convertToResponsePublic).toList();
     }
     return AuthorResponseDTO.builder().id(this.id).firstName(this.firstName).lastName(this.lastName)
         .books(bookResponseDTOs).build();

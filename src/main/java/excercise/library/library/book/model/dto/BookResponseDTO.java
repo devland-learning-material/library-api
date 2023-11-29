@@ -16,6 +16,7 @@ public class BookResponseDTO {
   private Long id;
   private String title;
   private String description;
+  private int quantity;
   private AuthorResponseDTO author;
 
 }

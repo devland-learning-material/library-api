@@ -2,7 +2,9 @@ package excercise.library.library.book.model;
 
 import excercise.library.library.author.model.Author;
 import excercise.library.library.author.model.dto.AuthorResponseDTO;
+import excercise.library.library.book.BookOutOfStockException;
 import excercise.library.library.book.model.dto.BookResponseDTO;
+import excercise.library.library.borrowingRecord.model.BorrowingRecord;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -31,9 +33,22 @@ public class Book {
 
   private String description;
 
+  private int quantity;
+
   @ManyToOne(cascade = CascadeType.PERSIST)
   @JoinColumn(name = "author_id")
   private Author author;
+
+  @ManyToOne(cascade = CascadeType.PERSIST)
+  private BorrowingRecord borrowingRecord;
+
+  public void descreaseQuantity() {
+    if (this.quantity <= 0) {
+      throw new BookOutOfStockException();
+    }
+    int DECREASE_VALUE = 1;
+    this.quantity = this.quantity - DECREASE_VALUE;
+  }
 
   public BookResponseDTO convertToResponse() {
     AuthorResponseDTO authorResponseDTO = null;
@@ -41,13 +56,20 @@ public class Book {
       authorResponseDTO = this.author.convertToResponseBook();
     }
 
-    return BookResponseDTO.builder().id(this.id).title(this.title).description(this.description)
+    return BookResponseDTO.builder()
+        .id(this.id).title(this.title)
+        .description(this.description)
+        .quantity(this.quantity)
         .author(authorResponseDTO)
         .build();
   }
 
-  public BookResponseDTO convertToResponseAuthor() {
-    return BookResponseDTO.builder().id(this.id).title(this.title).description(this.description)
+  public BookResponseDTO convertToResponsePublic() {
+    return BookResponseDTO.builder()
+        .id(this.id)
+        .title(this.title)
+        .quantity(this.quantity)
+        .description(this.description)
         .build();
   }
 

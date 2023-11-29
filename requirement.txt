@@ -64,3 +64,80 @@ has context menu
 get all 
 bisa pagination . 1 page min 5 item
 sort by title , sort by author name . asc dsc
+
+
+next :
+
+As a user i would like to be able to borrow a book
+So that i could read it at home
+ 
+Book
+    @OneToMany
+    List<BorrowingRecord> borrowingRecords
+ 
+Customer
+    Long id
+    String name
+ 
+    @OneToMany
+    List<BorrowingRecord> borrowingRecords
+ 
+BorrowingRecord
+    Long id
+ 
+    @ManyToOne
+    Book book
+ 
+    @ManyToOne
+    Customer customer
+ 
+    @CreatedTimestamp
+    Timestamp createdAt
+ 
+    @UpdatedTimestamp
+    Timestamp updatedAt
+ 
+Udah tau dibalikan -> updatedAt != null
+ 
+Flow Peminjaman Buku
+ 
+-> User search buku
+-> Kalo udah ketemu buku yang mau di pinjam,
+   dia mau bikin borrowing book
+-> User kirim data diri dan apa yang mau dipinjam
+-> Verify apakah user tersebut terdaftar
+    -> Kalo tidak, UserNotFound
+-> Verify apakah buku tersebut terdaftar
+    -> Kalo tidak, BookNotFound
+-> Verify apakah bukunya available atau tidak
+    -> Kalo tidak, BookUnavailable/BookIsOutOfStock
+-> Create BorrowingRecord
+ 
+Flow Pembalikan buku
+ 
+-> Kirim ID BorrowingRecord
+-> Verify BorrowingRecord nya exists dan updatedAtnya null
+    -> kalo ID tidak ketemu, BorrowingRecordNotFound
+    -> kalo updatedAtnya udah ada, BorrowingRecordIsAlreadyReturned
+-> Verify buku yang di request
+-> Verify User yang di request
+-> Save BorrowingRecord
+ 
+POST - /customers/{customerId}/borrowing-records
+        Request
+            Long bookId
+ 
+PUT  - /customers/{customerId}/borrowing-records/{id}
+        Request
+            Long id
+            Long bookId
+ 
+GET  - /customers/{customerId}/borrowing-records
+-> List<BorrowingRecord> specific terhadap 1 customer
+ 
+BorrowingRecordController
+ 
+    @GetMapping("/customers/{customerId}/borrowing-records")
+    @GetMapping("/customers/{customerId}/borrowing-records/{id}")
+    @PostMapping("/customers/{customerId}/borrowing-records")
+    @PutMapping("/customers/{customerId}/borrowing-records/{id}")
