@@ -141,3 +141,55 @@ BorrowingRecordController
     @GetMapping("/customers/{customerId}/borrowing-records/{id}")
     @PostMapping("/customers/{customerId}/borrowing-records")
     @PutMapping("/customers/{customerId}/borrowing-records/{id}")
+
+
+NEW
+
+As a user if im late on returning a book,
+then i should be charged for how many days has it passed after the submission date
+So that i could be more responsible for my own decission.
+ 
+Penalty Rp 1.000/hari
+ 
+New
+    @Column(columnDefinition = "boolean default false")
+BorrowingRecord
+    Long id
+ 
+    @ManyToOne
+    Book book
+ 
+    @ManyToOne
+    Customer customer
+ 
+    Double penalty = 0
+ 
+    @CreatedTimestamp
+    Timestamp createdAt
+ 
+    @UpdatedTimestamp
+    Timestamp updatedAt
+ 
+    LocalDate returnedAt
+ 
+    Boolean isReturned
+ 
+Create
+Request BorrowingRecord
+    Long id
+ 
+    Book book
+ 
+    Customer customer
+ 
+    Integer days 3
+ 
+Update
+Request BorrowingRecord
+    Long id
+ 
+    Book book
+ 
+    Customer customer
+ 
+    Double penalty

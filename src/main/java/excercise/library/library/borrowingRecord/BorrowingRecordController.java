@@ -1,7 +1,10 @@
 package excercise.library.library.borrowingRecord;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -20,9 +23,32 @@ import lombok.RequiredArgsConstructor;
 public class BorrowingRecordController {
   private final BorrowingRecordService borrowingRecordService;
 
+  @GetMapping("/customers/{customerId}/borrowing-records")
+  public ResponseEntity<List<BorrowingRecordResponseDTO>> getAllByCustomer(
+      @PathVariable("customerId") Long customerId) {
+    List<BorrowingRecord> borrowingRecords = this.borrowingRecordService.getAllBtCustomer(customerId);
+    List<BorrowingRecordResponseDTO> borrowingRecordRequestDTOs = borrowingRecords.stream()
+        .map(BorrowingRecord::convertToResponse).toList();
+    return ResponseEntity.ok(borrowingRecordRequestDTOs);
+  }
+
+
+  @GetMapping("/customers/{customerId}/borrowing-records/{id}")
+  public ResponseEntity<BorrowingRecordResponseDTO> getOneById(
+      @PathVariable("customerId") Long customerId,
+      @PathVariable("id") Long id) {
+    
+    Customer customer = Customer.builder().id(customerId).build();
+    BorrowingRecord borrowingRecord = BorrowingRecord.builder().id(id).customer(customer).build();
+    BorrowingRecord existBorrowingRecord = this.borrowingRecordService.getOneById(borrowingRecord);
+  
+    return ResponseEntity.ok(existBorrowingRecord.convertToResponse());
+  }
+  
+
   @PostMapping("/customers/{customerId}/borrowing-records")
   public ResponseEntity<BorrowingRecordResponseDTO> create(
-      @PathVariable Long customerId,
+      @PathVariable("customerId") Long customerId,
       @Valid @RequestBody BorrowingRecordRequestDTO borrowingRecordRequestDTO) {
     BorrowingRecord newBorrowingRecord = borrowingRecordRequestDTO.convertToEntity();
     Customer customer = Customer.builder().id(customerId).build();
@@ -33,8 +59,8 @@ public class BorrowingRecordController {
 
   @PutMapping("/customers/{customerId}/borrowing-records/{id}")
   public ResponseEntity<BorrowingRecordResponseDTO> returning(
-      @PathVariable Long customerId,
-      @PathVariable Long borrowingRecordId,
+      @PathVariable("customerId") Long customerId,
+      @PathVariable("id") Long borrowingRecordId,
       @Valid @RequestBody BorrowingRecordRequestDTO borrowingRecordRequestDTO) {
     BorrowingRecord borrowingRecord = borrowingRecordRequestDTO.convertToEntity();
     Customer customer = Customer.builder().id(customerId).build();

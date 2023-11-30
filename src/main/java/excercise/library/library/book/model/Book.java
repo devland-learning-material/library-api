@@ -64,7 +64,7 @@ public class Book {
         .build();
   }
 
-  public BookResponseDTO convertToResponsePublic() {
+  public BookResponseDTO convertToResponseWithoutRelation() {
     return BookResponseDTO.builder()
         .id(this.id)
         .title(this.title)

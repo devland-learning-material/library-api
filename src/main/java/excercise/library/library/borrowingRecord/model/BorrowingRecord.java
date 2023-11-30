@@ -1,6 +1,7 @@
 package excercise.library.library.borrowingRecord.model;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -8,6 +9,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import excercise.library.library.book.model.Book;
 import excercise.library.library.borrowingRecord.model.dto.BorrowingRecordResponseDTO;
 import excercise.library.library.customer.model.Customer;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -36,17 +38,32 @@ public class BorrowingRecord {
   @ManyToOne
   private Customer customer;
 
+  @Column(updatable = false, nullable = false)
   @CreationTimestamp
   private Timestamp createdAt;
 
   @UpdateTimestamp
   private Timestamp updatedAt;
 
+  private LocalDate returnedAt;
+
+  @Builder.Default
+  private Double penalty = 0.0;
+
+  @Builder.Default
+  private Boolean isReturned = false;
+
   public BorrowingRecordResponseDTO convertToResponse() {
 
-    return BorrowingRecordResponseDTO.builder().id(this.id).bookResponseDTO(this.book.convertToResponsePublic())
+    return BorrowingRecordResponseDTO.builder()
+        .id(this.id).bookResponseDTO(this.book.convertToResponseWithoutRelation())
         .customerResponseDTO(this.customer.cunvertToResponsePublic())
-        .createdAt(this.createdAt).updatedAt(this.updatedAt).build();
+        .createdAt(this.createdAt)
+        .updatedAt(this.updatedAt)
+        .returnedAt(this.returnedAt)
+        .penalty(this.penalty)
+        .isReturned(this.isReturned)
+        .build();
   }
 
 }
