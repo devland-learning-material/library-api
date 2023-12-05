@@ -1,4 +1,4 @@
-package excercise.library.library.borrowingRecord;
+package excercise.library.library.borrowingRecord.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

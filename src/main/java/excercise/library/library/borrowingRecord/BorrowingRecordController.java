@@ -15,10 +15,12 @@ import excercise.library.library.borrowingRecord.model.BorrowingRecord;
 import excercise.library.library.borrowingRecord.model.dto.BorrowingRecordRequestDTO;
 import excercise.library.library.borrowingRecord.model.dto.BorrowingRecordResponseDTO;
 import excercise.library.library.customer.model.Customer;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
+@SecurityRequirement(name = "bearerAuth")
 @RequiredArgsConstructor
 public class BorrowingRecordController {
   private final BorrowingRecordService borrowingRecordService;
