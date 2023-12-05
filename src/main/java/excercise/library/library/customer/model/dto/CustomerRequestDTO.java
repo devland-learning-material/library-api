@@ -17,6 +17,8 @@ public class CustomerRequestDTO {
   @NotBlank(message = "name is requried")
   private String name;
 
+  // add username password for application user data
+
   public Customer convertToEntity() {
     return Customer.builder().id(this.id).name(this.name).build();
   }

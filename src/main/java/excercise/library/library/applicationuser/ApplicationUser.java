@@ -22,4 +22,6 @@ public class ApplicationUser extends AuditModel {
   private String username;
 
   private String password;
+
+  // relation to customer
 }

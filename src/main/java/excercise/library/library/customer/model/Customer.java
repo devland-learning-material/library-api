@@ -30,6 +30,8 @@ public class Customer {
   @ManyToOne(cascade = CascadeType.PERSIST)
   BorrowingRecord borrowingRecord;
 
+  //relation one to one (application user. cascade type = persist)
+
   public CustomerResponseDTO convertToResponse() {
     return CustomerResponseDTO.builder().id(this.id).name(this.name).build();
   }
