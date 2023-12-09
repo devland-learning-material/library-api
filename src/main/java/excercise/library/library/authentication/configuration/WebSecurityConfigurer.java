@@ -2,6 +2,7 @@ package excercise.library.library.authentication.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -54,8 +55,11 @@ public class WebSecurityConfigurer {
         .exceptionHandling(exception -> exception.authenticationEntryPoint(this.unauthorizedHandler))
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(request -> request
-            .requestMatchers("/tokens", "/books/**", "/authors/**", "/swagger-ui/**", "/v3/api-docs/**")
-            .permitAll().anyRequest().authenticated());
+            .requestMatchers("/tokens", "/books/**", "/authors/**","/files/**", "/swagger-ui/**", "/v3/api-docs/**")
+            .permitAll()
+            .requestMatchers(HttpMethod.POST, "/customers")
+            .permitAll()
+            .anyRequest().authenticated());
 
     http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 

@@ -36,8 +36,17 @@ public class RestResponseExceptionHandler extends ResponseEntityExceptionHandler
   }
 
   // @ExceptionHandler({ BorrowingRecordBookNotMatchException.class, BorrowingRecordIsAlreadyReturnedException.class, BorrowingRecordNotFoundException.class, BorrowingRecordPenaltyException.class})
-  // protected ResponseEntity<Object> handleMedhodResponseError(){
+  // protected ResponseEntity<Object> handleMedhodResponseError(RuntimeException exception, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+  // Map<String, String> errors = new HashMap<>();
+  // exception.getBindingResult().getAllErrors().forEach(error -> {
+  //   String fieldName = ((FieldError) error).getField();
+  //   String errorMessage = error.getDefaultMessage();
+  //   errors.put(fieldName, errorMessage);
+  // });
 
+  // exception.
+
+  // return ResponseEntity.status(status).body(errors);
   // }
 
 }

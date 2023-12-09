@@ -11,10 +11,12 @@ import org.springframework.web.bind.annotation.RestController;
 import excercise.library.library.customer.model.Customer;
 import excercise.library.library.customer.model.dto.CustomerRequestDTO;
 import excercise.library.library.customer.model.dto.CustomerResponseDTO;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
+@SecurityRequirement(name = "bearerAuth")
 @RequiredArgsConstructor
 public class CustomerController {
   private final CustomerService customerService;
